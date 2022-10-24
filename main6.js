@@ -209,29 +209,63 @@ scoresSum = students.reduce(((acc, curr) => acc + curr.scores), 0)
 console.log('scoresSum', scoresSum)
 
 
+/*const students = [
+    {
+        id: 1,
+        name: "Bob",
+        age: 22,
+        isMarried: true,
+        scores: 85
+    },
+    {
+        id: 2,
+        name: "Alex",
+        age: 21,
+        isMarried: true,
+        scores: 90,
+    },
+    {
+        id: 3,
+        name: "Nick",
+        age: 20,
+        isMarried: false,
+        scores: 120
+    },
+
+];*/
+
 // 14. Д.З.:
 // Напишите функцию addFriends, которая принимает параметром массив students
 // и добавляет в каждому студенту свойство "friends",
 // значением которого является массив имён всех остальных студентов из массива students,
 // за исключением собственного имени студента. Т.е. в друзьях у Боба Боба быть не должно.
 const addFriends = (students) => {
-    return students.map(el => ({...el, friends: [students.filter((s) => el.name !== s.name)]}))
+    const studentsName = students.map(n => n.name)
+    return students.map(el => ({...el, friends: studentsName.filter(n => n !== el.name)}))
     //..............................
 }
 console.log('!', addFriends(students));
 // 15. Напишите функцию getBestStudents, которая принимает параметром массив
 // students  и количество лучших студентов, которое надо получить в
 // новом массиве.
+// если параметр количество лучших студентов больше, чем есть студентов на самом деле
+// заполнить получившийся массив имеющимися студентамиб оставшиеся места должны быть null
 // getBestStudents(students) => [{name: "Nick", age: 20, isMarried: false, scores: 120}]
 // getBestStudents(students, 3)
 // getBestStudents(students, 10)
+
 const getBestStudents = (students, n = 1) => {
-    let newArr = new Array(n).fill(null, students.length, n)
-    console.log(newArr)
-    return students.sort((a, b) => b.scores - a.scores).concat(newArr)
+    const sortedArray = students.sort((a, b) => b.scores - a.scores)
+    if (n < students.length) {
+        return sortedArray.splice(0, n)
+    } else {
+        const arrayWithNull = new Array(n-students.length).fill(null)
+        return [...sortedArray, ...arrayWithNull]
+    }
+
 }
 
-console.log(getBestStudents(students, 10))
+console.log(getBestStudents(students, 8))
 
 
 
